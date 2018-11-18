@@ -4,6 +4,7 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
 from os import path
+from enmailer.error import DataTypeError, InvalidEmailAddressError
 
 
 class ENMailer:
@@ -46,17 +47,21 @@ class ENMailer:
         Please take a look at README.md for further installation guidelines.
         """
 
+        # Check if every value is set in correct data format:
+        self.confirm()
+
+        # Create message object:
         message = MIMEMultipart()
         message['From'] = self._dispatcher
         message['To'] = self._recipient
 
-        # Notebook path and tags are managed via title settings:
+        # (Notebook path and tags are managed via title settings:)
         title = [self._subject]
         title.append('@' + self._notebook) if self._notebook else None
         title += list(" #" + tag for tag in self._tags)
         message['Subject'] = "".join(title)
 
-        # Add body
+        # Add body:
         body = self._contents
         message.attach(MIMEText(body, self._contents_type))
 
@@ -86,11 +91,41 @@ class ENMailer:
         """
 
         # Check if recipient and dispatcher are in correct email form:
-        pass
+        if type(self._recipient) is not str:
+            raise DataTypeError('recipient', 'str')
+        if len(self._recipient.split('@')) != 2:
+            raise InvalidEmailAddressError(self._recipient, 'recipient')
+
+        if type(self._dispatcher) is not str:
+            raise DataTypeError('dispatcher', 'str')
+        if len(self._dispatcher.split('@')) != 2:
+            raise InvalidEmailAddressError(self._dispatcher, 'dispatcher')
+
+        # Check other optional values:
+        if type(self._subject) is not str:
+            raise DataTypeError('title', 'str')
+        if type(self._contents) is not str:
+            raise DataTypeError('contents', 'str')
+        if type(self._tags) is not list:
+            raise DataTypeError('tags', 'list')
+        for item in self._tags:
+            if type(item) != str:
+                raise DataTypeError('tag', 'str')
+        if type(self._notebook) is not str and self._notebook is not None:
+            raise DataTypeError('notebook', 'str')
+        if type(self._SMTP_host) is not str:
+            raise DataTypeError('SMTP_host', 'str')
+        if type(self._SMTP_port) is not int:
+            raise DataTypeError('SMTP_port', 'int')
+
+        # Check contents_type:
+        if self._contents_type not in ('plain', 'html'):
+            raise DataTypeError('contents_type', "('plain', 'html')")
 
 
 ###############################################################################
     # Below are methods that manually changes the settings:
+
     def attach(self, filepath):
         """ Attach a file """
         self._attachments.append(filepath)
