@@ -1,10 +1,14 @@
-from os import popen
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email import encoders
 
 
 class ENMailer:
     def __init__(self):
         self._subject = ""
-        self._dispatcher = ""
+        self._dispatcher = None
         self._recipient = None
 
         self._contents = ""
@@ -12,13 +16,16 @@ class ENMailer:
         self._sendmail_path = '/usr/sbin/sendmail'
         self._notebook = None
 
+    def set_notebook(self, notebook):
+        self._notebook = notebook
+
     def set_recipient(self, recipient):
         """Set Recipient"""
-        pass
+        self._recipient = recipient
 
-    def set_dispatcher(slef, dispatcher):
+    def set_dispatcher(self, dispatcher):
         """Set Sender"""
-        pass
+        self._dispatcher = dispatcher
 
     def set_title(self, title):
         """ Set Title """
@@ -33,16 +40,26 @@ class ENMailer:
         pass
 
     def send(self):
-        process = popen("{} -t".format(self._sendmail_path), 'w')
-        process.write("From: {}\n".format(self._recipient))
-        process.write("To: {}\n".format(self._recipient))
-        process.write("Subject: {}\n".format(self._subject))
-        process.write("\n")
 
-        process.write(self._contents)
+        msg = MIMEMultipart()
+        msg['From'] = self._dispatcher
+        msg['To'] = self._recipient
+        msg['Subject'] = self._subject
 
-        status = process.close()
-        if not status:
-            print("[*] Successfully sent the mail.")
-        else:
-            print("[*] Sendmail :: status {}".format(status))
+        body = self._contents
+        msg.attach(MIMEText(body, 'plain'))
+
+        # filename = "NAME OF THE FILE WITH ITS EXTENSION"
+        # attachment = open("PATH OF THE FILE", "rb")
+
+        # part = MIMEBase('application', 'octet-stream')
+        # part.set_payload((attachment).read())
+        # encoders.encode_base64(part)
+        # part.add_header('Content-Disposition',
+        #                 "attachment; filename= %s" % filename)
+
+        # msg.attach(part)
+
+        server = smtplib.SMTP('localhost', 25)
+        server.sendmail(self._dispatcher, self._recipient, msg.as_string())
+        server.quit()
