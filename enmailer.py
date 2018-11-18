@@ -8,6 +8,24 @@ from os import path
 
 class ENMailer:
     def __init__(self, **kwargs):
+        """
+        Make sure every parameter is in its correct data type:
+
+        -----------------------------------------------------------------------
+        VARIABLE    | Type | Description
+        -----------------------------------------------------------------------
+        dispatcher  | str  | Sender. This field is required to prevent error
+        recipient   | str  | Evernote mail address
+        title       | str  | Title of the note     | Optional (df: Untitled)
+        contents    | str  | contents (plain text) | Optional (df: '')
+        tags        | list | tags for the note     | Optional (df: None)
+        notebook    | str  | saving notebook path  | Optional (df: None)
+        SMTP_host   | str  | SMTP host             | Optional (df: 'localhost')
+        SMTP_port   | int  | SMTP port             | Optional (df: 25)
+        attachments | list | fpath for attachments | Optional (df: [])
+        -----------------------------------------------------------------------
+
+        """
         self._subject = kwargs.get('title', None)
         self._dispatcher = kwargs.get('dispatcher', None)
         self._recipient = kwargs.get('recipient', None)
@@ -16,23 +34,33 @@ class ENMailer:
         self._notebook = kwargs.get('notebook', None)
         self._SMTP_host = kwargs.get('SMTP_host', 'localhost')
         self._SMTP_port = kwargs.get('SMTP_port', 25)
-        self._attachments = []
+        self._attachments = kwargs.get('attachments', [])
+        self._contents_type = 'plain'
 
     def send(self):
+        """
+        This method sends email via SMTP. By default, it uses port 25 and runs
+        on localhost, meaning that sendmail should have been installed as a
+        prerequisite.
+
+        Please take a look at README.md for further installation guidelines.
+        """
+
         message = MIMEMultipart()
         message['From'] = self._dispatcher
         message['To'] = self._recipient
 
-        # Set notebook destination and tags if necessary.
+        # Notebook path and tags are managed via title settings:
         title = [self._subject]
         title.append('@' + self._notebook) if self._notebook else None
         title += list(" #" + tag for tag in self._tags)
         message['Subject'] = "".join(title)
 
+        # Add body
         body = self._contents
-        message.attach(MIMEText(body, 'plain'))
+        message.attach(MIMEText(body, self._contents_type))
 
-        # Attach file if necessary.
+        # Update header if any file attachment has been made:
         for filepath in self._attachments:
             filename = path.basename(filepath)
             fp = open(filepath, 'rb')
@@ -51,31 +79,48 @@ class ENMailer:
                         self._recipient, message.as_string())
         server.quit()
 
+    def confirm(self):
+        """
+        This method confirms the settings prior to actual request of the
+        mail.
+        """
+
+        # Check if recipient and dispatcher are in correct email form:
+        pass
+
+
+###############################################################################
+    # Below are methods that manually changes the settings:
     def attach(self, filepath):
+        """ Attach a file """
         self._attachments.append(filepath)
 
     def add_tag(self, tag):
+        """ Add a tag"""
         self._tags.append(tag)
 
     def set_notebook(self, notebook):
+        """ Set notebook saving path """
         self._notebook = notebook
 
     def set_recipient(self, recipient):
-        """Set Recipient"""
+        """Set Recipient of the note """
         self._recipient = recipient
 
     def set_dispatcher(self, dispatcher):
-        """Set Sender"""
+        """Set dispatcher(a.k.a. sender) of the note """
         self._dispatcher = dispatcher
 
     def set_title(self, title):
-        """ Set Title """
+        """ Set title of the note """
         self._subject = title
 
-    def write(self, contents):
-        """ Write contents """
-        self._contents += contents
+    def write_text(self, contents):
+        """ Write contents in plain text """
+        self._contents = contents
+        self._contents_type = 'plain'
 
-    def confirm(self):
-        """ Confirm the setting before processing """
-        pass
+    def write_html(self, contents):
+        """ Write contents in html or ENML """
+        self._contents = contents
+        self._contents_type = 'html'
