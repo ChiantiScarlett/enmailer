@@ -291,5 +291,8 @@ Caution: This is not an Evernote's new type table. Rather it is a fixed size tab
 
 ## Acknowledgement
 
-I appreciate Stack Overflow for solving countless errors and bugs, and tons of coffee for overclocking myself.
+I do appreciate:
+ - Stack Overflow for solving countless errors and bugs
+ - Starbucks Coffee for overclocking myself
 
+Gracias!
