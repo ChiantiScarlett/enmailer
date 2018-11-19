@@ -185,7 +185,7 @@ Evernote limits certain types of HTML, since it is designed to store static text
 
 <br>
 
-### > Adding Styles to <div />
+### > Adding Styles to &lt;div /&gt;
 
 You can apply most of the CSS that regards styles of a text:
 
