@@ -1,6 +1,6 @@
 # ENMailer
 
-ENMailer is a python library that can send notes through Evernote email address.
+ENMailer is a python library that can send notes to Evernote email address.
 
 <br><br>
 
