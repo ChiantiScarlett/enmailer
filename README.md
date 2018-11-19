@@ -2,7 +2,11 @@
 
 ENMailer is a python library that can send notes through Evernote email address.
 
+<br><br>
+
 ## Prerequisite
+
+<br>
 
 ### sendmail
 
@@ -61,6 +65,8 @@ mailer.send()
 
 ## Usage in Detail
 
+<br>
+
 ### > Initialization
 
 Load ENMailer class and initialize:
@@ -71,6 +77,7 @@ from enmailer import ENMailer
 mailer = ENMailer()
 ```
 
+<br>
 
 ### > Setting Dispatcher and Recipient
 
@@ -84,6 +91,7 @@ mailer.set_recipient("your_evernote_email@m.evernote.com")
 
 **RECIPIENT** is the Evernote email address. This **is not** the email account that you use to login. Every Evernote account has its own unique email address - an adress that ends up with **@m.evernote.com**. You can find your address in `Settings` - `Email Notes to`.
 
+<br>
 
 ### > Title and Notebook Settings
 
@@ -94,6 +102,7 @@ mailer.set_notebook("YOUR NOTEBOOK")
 
 `set_notebook` method let you set your saving path. By default, the article will be saved in your default notebook.
 
+<br>
 
 ### > Writing Contents
 
@@ -115,6 +124,8 @@ mailer.write_html(HTML)
 
 For those who wonder the usage of HTML, please read the **HTML on Evernote** below.
 
+<br>
+
 ### > Send
 
 Finally, once you write data on your class file, you need to call `send()` module:
@@ -125,6 +136,7 @@ mailer.send()
 
 If it doesn't throw any error, then Ta-da! You made it!
 
+<br>
 
 ### > One-Line Initialization
 
@@ -137,6 +149,8 @@ mailer = ENMailer(dispatcher="SENDER_EMAIL",
                   title="NOTE TITLE",
                   contents="Note body.")
 ```
+
+<br>
 
 ### > SMTP Advanced Settings
 
@@ -156,6 +170,7 @@ mailer = ENMailer(SMTP_port=PORT,
 
 Evernote limits certain types of HTML, since it is designed to store static text data. So if you are trying to be more specific on visualization, I recommend you to take a look at this paragraph. Below are sample HTML code snippets.
 
+<br>
 
 ### > Using Heading Tags
 
@@ -168,6 +183,7 @@ Evernote limits certain types of HTML, since it is designed to store static text
 <h6>H5 for font-size 9</h6>
 ```
 
+<br>
 
 ### > Adding Styles to <div />
 
@@ -183,6 +199,8 @@ You can apply most of the CSS that regards styles of a text:
 Text with styles
 </div>
 ```
+
+<br>
 
 ### > Adding Checkbox
 
@@ -203,6 +221,7 @@ Text with styles
 <hr>
 ```
 
+<br>
 
 ### > Bold, Italic, Strike-through
 
@@ -217,6 +236,7 @@ Text with styles
 <div style="text-decoration: line-through;">Strike-through from CSS</div>
 ```
 
+<br>
 
 ### > Creating Table
 
