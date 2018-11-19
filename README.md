@@ -2,7 +2,7 @@
 
 ENMailer is a python library that can send notes through Evernote email address.
 
-## Prerequisites
+## Prerequisite
 
 ### sendmail
 
@@ -24,11 +24,13 @@ Modify the line that starts with **127.0.0.1** to the following:
 127.0.0.1 localhost.localdomain localhost YOUR_HOSTNAME
 ```
 
-Be careful: **YOUR_HOSTNAME** is literally **your** hostname. If you don't know what this is, then you can check it out by running the following command:
+Be careful: **YOUR_HOSTNAME** is literally **your** hostname. If you don't know what this is, then you can check it out by running the following command on your terminal:
 
 ```
 $ hostname
 ```
+
+<br>
 
 ## Installation
 
@@ -37,6 +39,8 @@ You can easily install the module by using pip:
 ```
 sudo pip3 install enmailer
 ```
+
+<br>
 
 ## Quick Running Sample
 
@@ -53,9 +57,11 @@ mailer.write_text("Note body.")
 mailer.send()
 ```
 
+<br>
+
 ## Usage in Detail
 
-### Initialization
+### > Initialization
 
 Load ENMailer class and initialize:
 
@@ -66,7 +72,7 @@ mailer = ENMailer()
 ```
 
 
-### Setting Dispatcher and Recipient
+### > Setting Dispatcher and Recipient
 
 ``` python
 mailer.set_dispatcher("your_email@example.com")
@@ -79,7 +85,7 @@ mailer.set_recipient("your_evernote_email@m.evernote.com")
 **RECIPIENT** is the Evernote email address. This **is not** the email account that you use to login. Every Evernote account has its own unique email address - an adress that ends up with **@m.evernote.com**. You can find your address in `Settings` - `Email Notes to`.
 
 
-### Title and Notebook Settings
+### > Title and Notebook Settings
 
 ``` python
 mailer.set_title("Your Note Title")
@@ -89,7 +95,7 @@ mailer.set_notebook("YOUR NOTEBOOK")
 `set_notebook` method let you set your saving path. By default, the article will be saved in your default notebook.
 
 
-### Writing Contents
+### > Writing Contents
 
 There are two types of writing text. One is using plain text, the other is using HTML format. The method you need is `write_text()` and `write_html()` respectively. Be aware of the fact that both method overwrites the previous value.
 
@@ -109,7 +115,7 @@ mailer.write_html(HTML)
 
 For those who wonder the usage of HTML, please read the **HTML on Evernote** below.
 
-### Send
+### > Send
 
 Finally, once you write data on your class file, you need to call `send()` module:
 
@@ -120,7 +126,7 @@ mailer.send()
 If it doesn't throw any error, then Ta-da! You made it!
 
 
-### One-Line Initialization
+### > One-Line Initialization
 
 You can also set settings on initialization as well:
 
@@ -132,7 +138,7 @@ mailer = ENMailer(dispatcher="SENDER_EMAIL",
                   contents="Note body.")
 ```
 
-### SMTP Advanced Settings
+### > SMTP Advanced Settings
 
 By default, ENMailer uses localhost port 25 for SMTP Server connection. If you want to use other settings, then here's the magic code:
 
@@ -144,13 +150,14 @@ mailer = ENMailer(SMTP_port=PORT,
                   SMTP_host=HOST)
 ```
 
+<br>
 
 ## HTML on Evernote
 
 Evernote limits certain types of HTML, since it is designed to store static text data. So if you are trying to be more specific on visualization, I recommend you to take a look at this paragraph. Below are sample HTML code snippets.
 
 
-### Using Heading Tags
+### > Using Heading Tags
 
 ``` html
 <h1>H1 for font-size 28</h1>
@@ -162,7 +169,7 @@ Evernote limits certain types of HTML, since it is designed to store static text
 ```
 
 
-### Adding Styles to <div />
+### > Adding Styles to <div />
 
 You can apply most of the CSS that regards styles of a text:
 
@@ -177,7 +184,7 @@ Text with styles
 </div>
 ```
 
-### Adding Checkbox
+### > Adding Checkbox
 
 ``` html
 <div>
@@ -190,14 +197,14 @@ Text with styles
 </div>
 ```
 
-### Adding Horizontal Line
+### > Adding Horizontal Line
 
 ``` html
 <hr>
 ```
 
 
-### Bold, Italic, Strike-through
+### > Bold, Italic, Strike-through
 
 ``` html
 <b>Bold Tag</b>
@@ -211,7 +218,7 @@ Text with styles
 ```
 
 
-### Creating Table
+### > Creating Table
 
 Caution: This is not an Evernote's new type table. Rather it is a fixed size table, using old HTML.
 
@@ -235,6 +242,7 @@ Caution: This is not an Evernote's new type table. Rather it is a fixed size tab
 </table>
 ```
 
+<br>
 
 ## Acknowledgement
 
